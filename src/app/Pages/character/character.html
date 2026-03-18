@@ -1,1 +1,157 @@
-<p>character works!</p>
+<div class="max-w-6xl mx-auto p-6 space-y-10">
+
+  <!-- 🔥 HERO -->
+  <div class="grid md:grid-cols-2 gap-8">
+
+    <!-- imagen -->
+    <div class="relative rounded-2xl overflow-hidden shadow-lg">
+      <img 
+        [src]="'https://cdn.thesimpsonsapi.com/500' + character.portrait_path"
+        class="w-full h-[500px] object-cover"
+      />
+
+      <span class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 text-xs rounded-full">
+        {{ character.status }}
+      </span>
+    </div>
+
+    <!-- info -->
+    <div class="flex flex-col justify-center gap-4">
+
+      <h1 class="text-4xl font-bold">
+        {{ character.name }}
+      </h1>
+
+      <p class="text-gray-500">
+        {{ character.occupation }}
+      </p>
+
+      <!-- mini cards -->
+      <div class="grid grid-cols-2 gap-4 mt-4">
+
+        <div class="bg-[#F7F5EC] p-4 rounded-xl">
+          <p class="text-xs text-gray-400">AGE</p>
+          <p class="font-bold">{{ character.age }}</p>
+        </div>
+
+        <div class="bg-[#F7F5EC] p-4 rounded-xl">
+          <p class="text-xs text-gray-400">GENDER</p>
+          <p class="font-bold">{{ character.gender }}</p>
+        </div>
+
+        <div class="bg-[#F7F5EC] p-4 rounded-xl col-span-2">
+          <p class="text-xs text-gray-400">BIRTHDATE</p>
+          <p class="font-bold">{{ character.birthdate }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+    <!-- FRASE -->
+  <div class="bg-yellow-400 p-6 rounded-2xl shadow-lg">
+    <p class="text-xs font-bold mb-2">FAMOUS QUOTE</p>
+    <p class="text-lg italic">
+      "{{ character.phrases[0] }}"
+    </p>
+  </div>
+    <!-- DESCRIPCIÓN -->
+  <div>
+    <h2 class="text-2xl font-bold mb-2">About</h2>
+    <p class="text-gray-600 leading-relaxed">
+      {{ character.description }}
+    </p>
+  </div>
+    <!-- FIRST APPEARANCE -->
+  <div>
+    <h2 class="text-2xl font-bold mb-4">First Appearance</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- episodio -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div 
+          class="h-40 bg-cover bg-center"
+          [style.background-image]="'url(https://cdn.thesimpsonsapi.com/500' + character.first_appearance_ep.image_path + ')'">
+        </div>
+
+        <div class="p-4">
+          <h3 class="font-bold">
+            {{ character.first_appearance_ep.name }}
+          </h3>
+
+          <p class="text-xs text-gray-500">
+            S{{ character.first_appearance_ep.season }} • E{{ character.first_appearance_ep.episode_number }}
+          </p>
+        </div>
+      </div>
+
+      <!-- short -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div 
+          class="h-40 bg-cover bg-center"
+          [style.background-image]="'url(https://cdn.thesimpsonsapi.com/500' + character.first_appearance_sh.image_path + ')'">
+        </div>
+
+        <div class="p-4">
+          <h3 class="font-bold">
+            {{ character.first_appearance_sh.name }}
+          </h3>
+
+          <p class="text-xs text-gray-500">
+            S{{ character.first_appearance_sh.season }} • E{{ character.first_appearance_sh.episode_number }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+  <!-- FIRST APPEARANCE -->
+  <div>
+    <h2 class="text-2xl font-bold mb-4">First Appearance</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- episodio -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div 
+          class="h-40 bg-cover bg-center"
+          [style.background-image]="'url(https://cdn.thesimpsonsapi.com/500' + character.first_appearance_ep.image_path + ')'">
+        </div>
+
+        <div class="p-4">
+          <h3 class="font-bold">
+            {{ character.first_appearance_ep.name }}
+          </h3>
+
+          <p class="text-xs text-gray-500">
+            S{{ character.first_appearance_ep.season }} • E{{ character.first_appearance_ep.episode_number }}
+          </p>
+        </div>
+      </div>
+
+      <!-- short -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div 
+          class="h-40 bg-cover bg-center"
+          [style.background-image]="'url(https://cdn.thesimpsonsapi.com/500' + character.first_appearance_sh.image_path + ')'">
+        </div>
+
+        <div class="p-4">
+          <h3 class="font-bold">
+            {{ character.first_appearance_sh.name }}
+          </h3>
+
+          <p class="text-xs text-gray-500">
+            S{{ character.first_appearance_sh.season }} • E{{ character.first_appearance_sh.episode_number }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+

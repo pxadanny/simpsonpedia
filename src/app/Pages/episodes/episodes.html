@@ -1,1 +1,45 @@
-<p>episodes works!</p>
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="w-full  xl:w-5/6 mx-auto grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 gap-6 p-6 ">
+
+  <div *ngFor="let episode of episodes; let i = index"
+  
+       class="bg-purple-100 rounded-2xl shadow-md hover:scale-105 transition cursor-pointer overflow-hidden">
+
+     
+     <div 
+  class="h-48 bg-cover bg-center rounded-t-2xl relative"
+  [style.background-image]="'url(https://cdn.thesimpsonsapi.com/500' + episode.image_path + ')'">
+
+  <!-- badge -->
+  <div class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
+    S{{ episode.season }} • E{{ episode.episode_number }}
+  </div>
+
+</div>
+
+<div class="m-4">
+  <h3 class="font-bold text-lg text-center">
+    {{episode.name}}
+  </h3>
+</div>
+
+  </div>
+  <button 
+  *ngIf="showScrollTop"
+  (click)="scrollToTop()"
+  class="
+  fixed bottom-40 lg:bottom-25 right-5 lg:right-10
+  flex items-center justify-center
+
+  w-14 h-14
+  bg-yellow-300 hover:bg-yellow-400
+  text-xl text-white
+  rounded-full shadow-lg
+  transition duration-300
+  ">
+
+  <i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+</div>
