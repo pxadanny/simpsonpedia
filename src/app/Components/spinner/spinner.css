@@ -1,0 +1,25 @@
+.homer-spinner {
+  width: 80px;
+  height: auto;
+  animation: spin 3s linear infinite;
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .homer-spinner {
+    width: 120px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .homer-spinner {
+    width: 160px;
+  }
+}
+
+/* Animación */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

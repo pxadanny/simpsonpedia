@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 @font-face {
   font-family: 'Simpsonfont';
   src: url('/Fonts/Simpsonfont.otf') format('truetype');
@@ -10,16 +11,7 @@
   font-family: 'Simpsonfont', cursive;
 }
 body{
-    background-color: #F0FFFF;
+    background-color: #FFFFF0;
+    font-family: 'Nunito', sans-serif;
 }
 
-:root{
-  --simpsons-yellow: #FFD90F;
-  --simpsons-blue: #70D1FE;
-  --simpsons-orange: #FF8C00;
-  --simpsons-green: #8BC34A;
-  --simpsons-pink: #FF6FB5;
-
-  --simpsons-dark: #222222;
-  --simpsons-gray: #F5F5F5;
-}
