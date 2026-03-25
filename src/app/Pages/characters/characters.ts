@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, HostListener,   } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Simpsons } from '../../services/simpsons';
 import { Character } from '../../models/character';
@@ -7,7 +8,7 @@ import { Spinner } from '../../Components/spinner/spinner';
 @Component({
   selector: 'app-characters',
   standalone: true,
-  imports: [CommonModule, Spinner],
+  imports: [CommonModule, Spinner, RouterModule],
   templateUrl: './characters.html',
   styleUrl: './characters.css',
 })
