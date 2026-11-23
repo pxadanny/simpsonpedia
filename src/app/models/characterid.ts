@@ -1,24 +1,18 @@
-import { Episode } from "./episode";
+import { Episode } from './episode';
 
 export interface Characterid {
-
   id: number;
-  age: number;
-  birthdate: string;
-  description: string;
-
-  first_appearance_ep_id: number;
-  first_appearance_sh_id: number;
-
-  gender: string;
   name: string;
-  occupation: string;
-  portrait_path: string;
   status: string;
-
+  gender: string;
+  age: number | null;
+  birthdate: string | null;
+  description: string | null;
+  occupation: string | null;
+  portrait_path: string | null;
   phrases: string[];
-
-  first_appearance_ep: Episode;
-  first_appearance_sh: Episode;
-
+  first_appearance_ep_id: number | null;
+  first_appearance_sh_id: number | null;
+  first_appearance_ep: Episode | null;
+  first_appearance_sh: Episode | null;
 }
