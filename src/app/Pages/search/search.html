@@ -1,0 +1,100 @@
+<main class="search-page mx-auto max-w-7xl px-4 pb-28 pt-8 sm:px-6 lg:pt-10">
+  <header class="search-banner relative mb-7 overflow-hidden rounded-[2rem] border border-amber-200 p-6 shadow-sm sm:p-10">
+    <i class="fa-solid fa-magnifying-glass absolute -right-6 -top-8 text-[150px] text-amber-950/10" aria-hidden="true"></i>
+    <p class="relative mb-2 text-xs font-extrabold uppercase tracking-[0.22em] text-amber-900/75">Explore Springfield</p>
+    <h1 class="simpsons-title relative max-w-3xl break-words text-3xl text-slate-900 sm:text-5xl">
+      {{ query.length >= 2 ? 'Search results' : 'Discover Springfield' }}
+    </h1>
+    <p class="relative mt-4 max-w-2xl text-slate-700">
+      <ng-container *ngIf="query.length >= 2; else searchPrompt">
+        Results for <strong>“{{ query }}”</strong> across characters, episodes and locations.
+      </ng-container>
+      <ng-template #searchPrompt>Use the search bar at the top to explore characters, episodes and locations.</ng-template>
+    </p>
+  </header>
+
+  <section *ngIf="query.length >= 2" aria-label="Search results">
+    <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+      <p class="text-sm font-semibold text-slate-600" aria-live="polite">
+        {{ count('all') }} {{ count('all') === 1 ? 'match' : 'matches' }}
+        <span *ngIf="isIndexing">found so far · indexing {{ snapshot.loadedPages }}/{{ snapshot.totalPages }} pages</span>
+      </p>
+      <p *ngIf="!isIndexing && !snapshot.hasErrors" class="flex items-center gap-2 text-xs font-bold text-emerald-700">
+        <i class="fa-solid fa-check-circle" aria-hidden="true"></i>
+        Full catalog checked
+      </p>
+    </div>
+
+    <div role="group" aria-label="Filter result categories" class="mb-7 flex flex-wrap gap-2">
+      <button type="button" (click)="setFilter('all')" [attr.aria-pressed]="activeFilter === 'all'"
+        class="search-filter" [class.search-filter-active]="activeFilter === 'all'">
+        All <span class="search-count">{{ count('all') }}</span>
+      </button>
+      <button type="button" (click)="setFilter('characters')" [attr.aria-pressed]="activeFilter === 'characters'"
+        class="search-filter" [class.search-filter-active]="activeFilter === 'characters'">
+        <i class="fa-solid fa-user-group mr-1" aria-hidden="true"></i>
+        Characters <span class="search-count">{{ count('characters') }}</span>
+      </button>
+      <button type="button" (click)="setFilter('episodes')" [attr.aria-pressed]="activeFilter === 'episodes'"
+        class="search-filter" [class.search-filter-active]="activeFilter === 'episodes'">
+        <i class="fa-solid fa-tv mr-1" aria-hidden="true"></i>
+        Episodes <span class="search-count">{{ count('episodes') }}</span>
+      </button>
+      <button type="button" (click)="setFilter('locations')" [attr.aria-pressed]="activeFilter === 'locations'"
+        class="search-filter" [class.search-filter-active]="activeFilter === 'locations'">
+        <i class="fa-solid fa-location-dot mr-1" aria-hidden="true"></i>
+        Locations <span class="search-count">{{ count('locations') }}</span>
+      </button>
+    </div>
+
+    <div *ngIf="isIndexing" class="mb-6 overflow-hidden rounded-xl bg-slate-100" role="progressbar"
+      [attr.aria-valuenow]="snapshot.loadedPages" [attr.aria-valuemin]="0"
+      [attr.aria-valuemax]="snapshot.totalPages" aria-label="Indexing the catalog">
+      <div class="search-progress h-2" [style.width.%]="snapshot.totalPages ? (snapshot.loadedPages / snapshot.totalPages) * 100 : 0"></div>
+    </div>
+
+    <p *ngIf="snapshot.hasErrors" class="mb-6 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm font-semibold text-orange-900" role="alert">
+      Some catalog pages could not be loaded. The search results may be incomplete.
+    </p>
+
+    <div *ngIf="filteredMatches.length; else noMatches" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <a *ngFor="let item of visibleMatches; trackBy: trackItem"
+        [routerLink]="['/', item.type, item.id]"
+        class="search-result group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+        [attr.aria-label]="'View ' + item.type + ': ' + item.name">
+        <div class="relative flex h-44 items-center justify-center overflow-hidden bg-sky-50">
+          <img *ngIf="item.imagePath" class="h-full w-full object-contain p-3 transition duration-200 group-hover:scale-105"
+            [src]="imageUrl(item.imagePath)" [alt]="item.name" loading="lazy" />
+          <i *ngIf="!item.imagePath" class="fa-solid fa-image text-5xl text-sky-300" aria-hidden="true"></i>
+          <span class="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-extrabold capitalize text-slate-800 shadow-sm">
+            {{ item.type }}
+          </span>
+        </div>
+        <div class="p-4">
+          <h2 class="text-lg font-extrabold leading-snug text-slate-900">{{ item.name }}</h2>
+          <p class="mt-2 text-sm text-slate-600">{{ item.subtitle }}</p>
+          <p class="mt-4 text-xs font-extrabold uppercase tracking-wide text-amber-800">
+            View details <i class="fa-solid fa-arrow-right ml-1" aria-hidden="true"></i>
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <ng-template #noMatches>
+      <div class="rounded-2xl border border-dashed border-amber-300 bg-amber-50 p-7 text-center">
+        <i class="fa-solid fa-magnifying-glass mb-3 text-3xl text-amber-700" aria-hidden="true"></i>
+        <h2 class="text-lg font-extrabold text-slate-900">{{ isIndexing ? 'Still looking...' : 'No matches found' }}</h2>
+        <p class="mt-2 text-slate-600">
+          {{ isIndexing ? 'Results will appear here as catalog pages load.' : 'Try another name or a shorter keyword.' }}
+        </p>
+      </div>
+    </ng-template>
+
+    <div *ngIf="visibleCount < filteredMatches.length" class="mt-8 text-center">
+      <button type="button" (click)="showMore()"
+        class="rounded-full bg-amber-400 px-6 py-3 font-extrabold text-slate-900 transition hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+        Show more results
+      </button>
+    </div>
+  </section>
+</main>
