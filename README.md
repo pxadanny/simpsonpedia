@@ -4,7 +4,7 @@
 
 Simpsonpedia is a fan-made, responsive web app for exploring *The Simpsons*. Browse illustrated catalogs, open detailed profiles, search across the universe, discover something random, and keep a personal collection of favorites.
 
-> **Status:** Active development · No public demo deployed yet.
+> **Status:** Active development · Automated GitHub Pages deployment prepared; first successful publication pending.
 
 ## Features
 
@@ -54,14 +54,14 @@ npm test
 
 | Page | Route |
 | --- | --- |
-| Characters | \`/characters\` |
-| Character profile | \`/characters/:id\` |
-| Episodes | \`/episodes\` |
-| Episode profile | \`/episodes/:id\` |
-| Locations | \`/locations\` |
-| Location profile | \`/locations/:id\` |
-| Search | \`/search?q=Homer\` |
-| Favorites | \`/favorites\` |
+| Characters | `/characters` |
+| Character profile | `/characters/:id` |
+| Episodes | `/episodes` |
+| Episode profile | `/episodes/:id` |
+| Locations | `/locations` |
+| Location profile | `/locations/:id` |
+| Search | `/search?q=Homer` |
+| Favorites | `/favorites` |
 
 The home route redirects to the characters catalog.
 
@@ -76,6 +76,32 @@ src/app/
 └── app.routes.ts      # Application routes
 ~~~
 
+## Publishing on GitHub Pages
+
+Deployment is automated with [GitHub Actions](.github/workflows/deploy-pages.yml):
+
+- Pull requests to `master` run unit tests and a production build, but do not publish the site.
+- Pushes to `master` (and manually triggered runs) run the checks and deploy the built application.
+- The Angular build uses `--base-href=/simpsonpedia/`, which is required when hosting inside this repository's GitHub Pages project path.
+- The workflow publishes `dist/simpsonpedia/browser`, adds `.nojekyll`, and copies `index.html` to `404.html` so that direct links and page refreshes can load the client-side Angular router.
+
+**One-time repository setup:**
+
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Merge the deployment pull request to `master`, then check **Actions → Build, test and deploy Simpsonpedia**.
+4. After the deployment succeeds, GitHub Pages should make the project available at `https://pxadanny.github.io/simpsonpedia/`.
+
+**Important:** The expected address is not evidence the site is already online. Check the Pages settings and successful deployment before sharing the URL. The site uses the API and CDN hosted by third parties.
+
+If the workflow fails, inspect its **Unit tests**, **Production build**, and **Deploy** steps. For a local equivalent:
+
+~~~bash
+npm ci
+npm test -- --watch=false
+npm run build -- --configuration production --base-href=/simpsonpedia/
+~~~
+
 ## Data and privacy
 
 - Catalog data comes from [The Simpsons API](https://thesimpsonsapi.com/).
@@ -86,7 +112,7 @@ src/app/
 
 ## Project status and upcoming work
 
-The catalog and core discovery flows are implemented. Before deployment, the project still needs a full production build, test run, responsive/browser QA and further image asset optimization.
+The catalog and core discovery flows are implemented. The CI pipeline runs a production build and unit tests. Responsive/browser QA and final verification of the published site are still recommended.
 
 ## Attribution
 
