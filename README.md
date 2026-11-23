@@ -1,59 +1,93 @@
-# Simpsonpedia
+# Simpsonpedia 💛
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+**Explore Springfield — one character, episode, and location at a time.**
 
-## Development server
+Simpsonpedia is a fan-made, responsive web app for exploring *The Simpsons*. Browse illustrated catalogs, open detailed profiles, search across the universe, discover something random, and keep a personal collection of favorites.
 
-To start a local development server, run:
+> **Status:** Active development · No public demo deployed yet.
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Characters:** profiles, biography, famous quotes and first appearances when available.
+- **Episodes:** cover artwork, season, episode number, original air date and synopsis.
+- **Locations:** places around Springfield, with descriptions and appearances when available.
+- **Global search:** search across all three categories, with category filters and loading progress.
+- **Random:** jump to a randomly selected character, episode or location.
+- **Favorites:** save and remove items in a browser-local collection.
+- **Responsive:** designed for mobile, tablet and desktop, with accessible navigation and loading/error states.
 
-## Code scaffolding
+## Technology
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular 21, TypeScript and Angular Router
+- Tailwind CSS 4
+- Font Awesome 7
+- RxJS and Angular signals
+- Vitest for unit tests
+- [The Simpsons API](https://thesimpsonsapi.com/) for catalog content
 
-```bash
-ng generate component component-name
-```
+## Run locally
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Requirements: a supported Node.js version for Angular 21, and npm.
 
-```bash
-ng generate --help
-```
+~~~bash
+git clone https://github.com/pxadanny/simpsonpedia.git
+cd simpsonpedia
+npm install
+npm start
+~~~
 
-## Building
+Open **http://localhost:4200**.
 
-To build the project run:
+To create a production build:
 
-```bash
-ng build
-```
+~~~bash
+npm run build
+~~~
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+To run unit tests:
 
-## Running unit tests
+~~~bash
+npm test
+~~~
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Pages
 
-```bash
-ng test
-```
+| Page | Route |
+| --- | --- |
+| Characters | \`/characters\` |
+| Character profile | \`/characters/:id\` |
+| Episodes | \`/episodes\` |
+| Episode profile | \`/episodes/:id\` |
+| Locations | \`/locations\` |
+| Location profile | \`/locations/:id\` |
+| Search | \`/search?q=Homer\` |
+| Favorites | \`/favorites\` |
 
-## Running end-to-end tests
+The home route redirects to the characters catalog.
 
-For end-to-end (e2e) testing, run:
+## Project structure
 
-```bash
-ng e2e
-```
+~~~text
+src/app/
+├── Components/        # Shared header, navigation and loading indicator
+├── Pages/             # Catalogs, profiles, search and favorites
+├── models/            # API data interfaces
+├── services/          # API, search, random discovery and favorites logic
+└── app.routes.ts      # Application routes
+~~~
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Data and privacy
 
-## Additional Resources
+- Catalog data comes from [The Simpsons API](https://thesimpsonsapi.com/).
+- The API does not provide a server-side name search. Simpsonpedia builds a progressive index from its paginated lists and reuses it during the current app session. An initial search may take longer while the index loads.
+- Favorites are saved in **localStorage** on the current browser only. They do not sync between browsers or devices, and no account is needed.
+- The app depends on the availability of its third-party catalog API and image CDN.
+- First-appearance details and other fields are displayed only when provided by the API.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Project status and upcoming work
+
+The catalog and core discovery flows are implemented. Before deployment, the project still needs a full production build, test run, responsive/browser QA and further image asset optimization.
+
+## Attribution
+
+Simpsonpedia is an independent fan project, **not affiliated with or endorsed by** the creators, owners or distributors of *The Simpsons*. All trademarks, character names and related artwork belong to their respective owners.

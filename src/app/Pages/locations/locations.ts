@@ -22,7 +22,7 @@ export class Locations implements OnInit {
 
   constructor(
     private readonly simpsonsService: Simpsons,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class Locations implements OnInit {
   onScroll(): void {
     this.showScrollTop = window.scrollY > 300;
     const scrollPosition = window.innerHeight + window.scrollY;
-    const threshold = document.body.offsetHeight - 100;
+    const threshold = document.documentElement.scrollHeight - 240;
 
     if (scrollPosition >= threshold && this.nextUrl && !this.isFetching) {
       this.loadLocations(this.nextUrl);
@@ -63,13 +63,13 @@ export class Locations implements OnInit {
     });
   }
 
-  imageUrl(path: string | null | undefined): string {
-    return path ? 'https://cdn.thesimpsonsapi.com/500' + path : '';
-  }
-
   markImageFailed(id: number): void {
     this.failedImages.add(id);
     this.cdr.markForCheck();
+  }
+
+  imageUrl(path: string | null | undefined): string {
+    return path ? 'https://cdn.thesimpsonsapi.com/500' + path : '';
   }
 
   trackById(_index: number, location: Location): number {

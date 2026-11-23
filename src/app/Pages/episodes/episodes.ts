@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Simpsons } from '../../services/simpsons';
@@ -15,32 +15,36 @@ export class Episodes implements OnInit {
   showScrollTop = false;
   loading = true;
   isFetching = false;
+  errorMessage: string | null = null;
   episodes: Episode[] = [];
   nextUrl: string | null = null;
+  failedImages = new Set<number>();
 
   constructor(
     private readonly simpsonsService: Simpsons,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
   ) {}
-
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    this.showScrollTop = window.scrollY > 300;
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const threshold = document.body.offsetHeight - 100;
-
-    if (scrollPosition >= threshold && !this.loading && this.nextUrl && !this.isFetching) {
-      this.isFetching = true;
-      this.loadEpisodes(this.nextUrl);
-    }
-  }
 
   ngOnInit(): void {
     this.loadEpisodes();
   }
 
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.showScrollTop = window.scrollY > 300;
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const threshold = document.documentElement.scrollHeight - 240;
+
+    if (scrollPosition >= threshold && this.nextUrl && !this.isFetching) {
+      this.loadEpisodes(this.nextUrl);
+    }
+  }
+
   loadEpisodes(url?: string): void {
-    this.loading = true;
+    if (this.isFetching) return;
+    this.isFetching = true;
+    this.loading = this.episodes.length === 0;
+    this.errorMessage = null;
 
     this.simpsonsService.getEpisodes(url).subscribe({
       next: (data) => {
@@ -50,8 +54,8 @@ export class Episodes implements OnInit {
         this.isFetching = false;
         this.cdr.markForCheck();
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
+        this.errorMessage = 'We could not load the episodes. Please try again.';
         this.loading = false;
         this.isFetching = false;
         this.cdr.markForCheck();
@@ -59,8 +63,17 @@ export class Episodes implements OnInit {
     });
   }
 
+  markImageFailed(id: number): void {
+    this.failedImages.add(id);
+    this.cdr.markForCheck();
+  }
+
   imageUrl(path: string | null | undefined): string {
     return path ? 'https://cdn.thesimpsonsapi.com/500' + path : '';
+  }
+
+  trackById(_index: number, episode: Episode): number {
+    return episode.id;
   }
 
   scrollToTop(): void {
