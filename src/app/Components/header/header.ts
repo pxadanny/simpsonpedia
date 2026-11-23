@@ -1,8 +1,9 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RandomDiscovery } from '../../services/random-discovery';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +13,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class Header implements OnInit {
   query = '';
+  randomLoading = false;
+  randomError: string | null = null;
+
   private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly randomDiscovery: RandomDiscovery,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.syncQuery();
@@ -27,7 +35,39 @@ export class Header implements OnInit {
   submitSearch(): void {
     const query = this.query.trim();
     if (query.length < 2) return;
-    this.router.navigate(['/search'], { queryParams: { q: query } });
+    void this.router.navigate(['/search'], { queryParams: { q: query } });
+  }
+
+  discoverRandom(): void {
+    if (this.randomLoading) return;
+    this.randomLoading = true;
+    this.randomError = null;
+
+    this.randomDiscovery.pick().pipe(
+      take(1),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: (destination) => {
+        void this.router.navigate(['/', destination.category, destination.id])
+          .then((navigated) => {
+            this.randomLoading = false;
+            if (!navigated) this.randomError = 'Could not open that page. Please try again.';
+            this.cdr.markForCheck();
+          })
+          .catch(() => this.showRandomError());
+      },
+      error: () => this.showRandomError(),
+    });
+  }
+
+  clearRandomError(): void {
+    this.randomError = null;
+  }
+
+  private showRandomError(): void {
+    this.randomLoading = false;
+    this.randomError = 'D’oh! Could not find a random discovery. Please try again.';
+    this.cdr.markForCheck();
   }
 
   private syncQuery(): void {

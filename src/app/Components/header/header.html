@@ -17,9 +17,27 @@
   </form>
 
   <button type="button"
-    class="fixed bottom-25 right-5 flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-yellow-400 text-xl font-semibold shadow-lg transition hover:bg-yellow-500 lg:static lg:h-auto lg:w-auto lg:px-4 lg:py-2"
-    aria-label="Random (coming soon)" title="Random (coming soon)" disabled>
-    <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
-    <span class="hidden lg:inline">Random</span>
+    (click)="discoverRandom()"
+    [disabled]="randomLoading"
+    [attr.aria-busy]="randomLoading"
+    [attr.aria-label]="randomLoading ? 'Finding a random discovery' : 'Discover a random character, episode or location'"
+    title="Discover a random character, episode or location"
+    class="fixed bottom-25 right-5 flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-yellow-400 text-xl font-semibold text-slate-900 shadow-lg transition hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 disabled:cursor-wait disabled:opacity-70 lg:static lg:h-auto lg:w-auto lg:px-4 lg:py-2">
+    @if (randomLoading) {
+      <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+    } @else {
+      <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
+    }
+    <span class="hidden lg:inline">{{ randomLoading ? 'Discovering...' : 'Random' }}</span>
   </button>
+
+  @if (randomError) {
+    <div role="alert" class="fixed bottom-43 right-4 z-[60] flex max-w-[calc(100vw-2rem)] items-start gap-3 rounded-2xl border border-amber-300 bg-white p-4 text-sm text-slate-800 shadow-xl lg:bottom-auto lg:top-[calc(10vh+1rem)]">
+      <i class="fa-solid fa-circle-exclamation mt-0.5 text-amber-600" aria-hidden="true"></i>
+      <span>{{ randomError }}</span>
+      <button type="button" (click)="clearRandomError()" class="rounded-full p-1 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600" aria-label="Dismiss error">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+  }
 </div>
