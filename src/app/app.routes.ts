@@ -6,6 +6,7 @@ import { Episode } from './Pages/episode/episode';
 import { Locations } from './Pages/locations/locations';
 import { Location } from './Pages/location/location';
 import { Search } from './Pages/search/search';
+import { Favorites } from './Pages/favorites/favorites';
 
 export const routes: Routes = [
   { path: 'characters', component: Characters },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'locations', component: Locations },
   { path: 'locations/:id', component: Location },
   { path: 'search', component: Search },
+  { path: 'favorites', component: Favorites },
   { path: '**', redirectTo: 'characters', pathMatch: 'full' },
 ];

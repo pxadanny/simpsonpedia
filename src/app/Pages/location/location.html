@@ -55,6 +55,19 @@
             <i class="fa-solid fa-map-pin mt-1 text-amber-600" aria-hidden="true"></i>
             {{ place.town || 'Town not specified' }}
           </p>
+          <div class="mt-5">
+            <button type="button" (click)="toggleFavorite(place)"
+              [attr.aria-pressed]="favorites.has('locations', place.id)"
+              [attr.aria-label]="favorites.has('locations', place.id) ? 'Remove ' + place.name + ' from favorites' : 'Save ' + place.name + ' to favorites'"
+              class="inline-flex items-center gap-2 rounded-full border border-rose-200 px-5 py-3 text-sm font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+              [ngClass]="favorites.has('locations', place.id) ? 'bg-rose-100 text-rose-800 hover:bg-rose-200' : 'bg-white text-slate-800 hover:bg-rose-50'">
+              <i class="fa-heart" [ngClass]="favorites.has('locations', place.id) ? 'fa-solid text-rose-600' : 'fa-regular text-rose-500'" aria-hidden="true"></i>
+              {{ favorites.has('locations', place.id) ? 'Saved to favorites' : 'Save to favorites' }}
+            </button>
+            <p *ngIf="favoriteError" class="mt-2 text-sm text-rose-700" role="alert">
+              Could not save your favorites. Check browser storage settings.
+            </p>
+          </div>
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">

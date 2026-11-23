@@ -66,6 +66,19 @@
             <i class="fa-solid fa-briefcase mt-1 text-amber-600" aria-hidden="true"></i>
             <span>{{ person.occupation || 'Occupation unknown' }}</span>
           </p>
+          <div class="mt-5">
+            <button type="button" (click)="toggleFavorite(person)"
+              [attr.aria-pressed]="favorites.has('characters', person.id)"
+              [attr.aria-label]="favorites.has('characters', person.id) ? 'Remove ' + person.name + ' from favorites' : 'Save ' + person.name + ' to favorites'"
+              class="inline-flex items-center gap-2 rounded-full border border-rose-200 px-5 py-3 text-sm font-extrabold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+              [ngClass]="favorites.has('characters', person.id) ? 'bg-rose-100 text-rose-800 hover:bg-rose-200' : 'bg-white text-slate-800 hover:bg-rose-50'">
+              <i class="fa-heart" [ngClass]="favorites.has('characters', person.id) ? 'fa-solid text-rose-600' : 'fa-regular text-rose-500'" aria-hidden="true"></i>
+              {{ favorites.has('characters', person.id) ? 'Saved to favorites' : 'Save to favorites' }}
+            </button>
+            <p *ngIf="favoriteError" class="mt-2 text-sm text-rose-700" role="alert">
+              Could not save your favorites. Check browser storage settings.
+            </p>
+          </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3 sm:gap-4">

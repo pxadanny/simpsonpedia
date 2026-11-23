@@ -6,6 +6,7 @@ import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs'
 import { Simpsons } from '../../services/simpsons';
 import { Characterid } from '../../models/characterid';
 import { Spinner } from '../../Components/spinner/spinner';
+import { FavoritesService } from '../../services/favorites';
 
 @Component({
   selector: 'app-character',
@@ -19,6 +20,8 @@ export class Character implements OnInit {
   errorMessage: string | null = null;
   portraitFailed = false;
 
+  readonly favorites = inject(FavoritesService);
+  favoriteError = false;
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
@@ -56,6 +59,16 @@ export class Character implements OnInit {
       this.character = character;
       this.loading = false;
       this.cdr.markForCheck();
+    });
+  }
+
+  toggleFavorite(person: Characterid): void {
+    this.favoriteError = !this.favorites.toggle({
+      type: 'characters',
+      id: person.id,
+      name: person.name,
+      subtitle: person.occupation || 'Character',
+      imagePath: person.portrait_path || null,
     });
   }
 

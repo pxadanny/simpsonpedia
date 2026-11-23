@@ -6,6 +6,7 @@ import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs'
 import { Simpsons } from '../../services/simpsons';
 import { Location as LocationModel } from '../../models/location';
 import { Spinner } from '../../Components/spinner/spinner';
+import { FavoritesService } from '../../services/favorites';
 
 @Component({
   selector: 'app-location',
@@ -21,6 +22,8 @@ export class Location implements OnInit {
   episodeImageFailed = false;
   shortImageFailed = false;
 
+  readonly favorites = inject(FavoritesService);
+  favoriteError = false;
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
@@ -60,6 +63,16 @@ export class Location implements OnInit {
       this.location = location;
       this.loading = false;
       this.cdr.markForCheck();
+    });
+  }
+
+  toggleFavorite(place: LocationModel): void {
+    this.favoriteError = !this.favorites.toggle({
+      type: 'locations',
+      id: place.id,
+      name: place.name,
+      subtitle: [place.town, place.use].filter(Boolean).join(' · ') || 'Location',
+      imagePath: place.image_path || null,
     });
   }
 

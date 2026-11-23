@@ -1,0 +1,33 @@
+:host { display: block; }
+.favorites-banner {
+  background: linear-gradient(135deg, #ffeeb3, #f8d0c7 70%, #f4b6bd);
+}
+.favorite-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid #e4dccd;
+  border-radius: 9999px;
+  background: #fff;
+  color: #334155;
+  padding: .6rem 1rem;
+  font-size: .875rem;
+  font-weight: 800;
+}
+.favorite-filter:hover { background: #fff8e2; }
+.favorite-filter:focus-visible { outline: 2px solid #b45309; outline-offset: 3px; }
+.favorite-filter-active { background: #fbd34b; border-color: #e6b83e; color: #1e293b; }
+.favorite-filter-active:hover { background: #f5c83b; }
+.favorite-count {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 1.6rem;
+  padding: .15rem .4rem;
+  border-radius: 9999px;
+  background: rgb(15 23 42 / 8%);
+  font-size: .75rem;
+}
+.favorite-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .favorite-card:hover { transform: translateY(-3px); box-shadow: 0 14px 26px rgb(15 23 42 / 12%); }
+}

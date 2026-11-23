@@ -6,6 +6,7 @@ import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs'
 import { Simpsons } from '../../services/simpsons';
 import { Episode as EpisodeModel } from '../../models/episode';
 import { Spinner } from '../../Components/spinner/spinner';
+import { FavoritesService } from '../../services/favorites';
 
 @Component({
   selector: 'app-episode',
@@ -19,6 +20,8 @@ export class Episode implements OnInit {
   errorMessage: string | null = null;
   imageFailed = false;
 
+  readonly favorites = inject(FavoritesService);
+  favoriteError = false;
   private readonly destroyRef = inject(DestroyRef);
 
   constructor(
@@ -56,6 +59,16 @@ export class Episode implements OnInit {
       this.episode = episode;
       this.loading = false;
       this.cdr.markForCheck();
+    });
+  }
+
+  toggleFavorite(entry: EpisodeModel): void {
+    this.favoriteError = !this.favorites.toggle({
+      type: 'episodes',
+      id: entry.id,
+      name: entry.name,
+      subtitle: 'Season ' + entry.season + ' · Episode #' + entry.episode_number,
+      imagePath: entry.image_path || null,
     });
   }
 
