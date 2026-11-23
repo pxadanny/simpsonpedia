@@ -1,1 +1,169 @@
-<p>location works!</p>
+<app-spinner *ngIf="loading"></app-spinner>
+
+<section *ngIf="!loading && errorMessage" class="mx-auto max-w-2xl px-6 py-16 text-center" role="alert">
+  <div class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-amber-100 text-4xl text-amber-600">
+    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+  </div>
+  <h1 class="simpsons-title mb-3 text-3xl text-slate-900">D'oh!</h1>
+  <p class="mb-7 text-slate-600">{{ errorMessage }}</p>
+  <a routerLink="/locations" class="inline-flex items-center gap-2 rounded-full bg-amber-400 px-6 py-3 font-bold text-slate-900 transition hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    Back to locations
+  </a>
+</section>
+
+<main *ngIf="location as place" class="location-detail mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:pt-9">
+  <nav aria-label="Breadcrumb" class="mb-6 flex flex-wrap items-center gap-3 text-sm">
+    <a routerLink="/locations" class="inline-flex items-center gap-2 font-bold text-slate-600 transition hover:text-amber-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      All locations
+    </a>
+    <span class="text-slate-300" aria-hidden="true">/</span>
+    <span class="max-w-full truncate font-semibold text-slate-900" aria-current="page">{{ place.name }}</span>
+  </nav>
+
+  <section class="location-hero overflow-hidden rounded-[2rem] border border-sky-200 bg-white shadow-lg" aria-labelledby="location-title">
+    <div class="grid lg:grid-cols-12">
+      <div class="location-stage relative flex min-h-[310px] items-center justify-center overflow-hidden p-6 sm:min-h-[420px] sm:p-9 lg:col-span-7 lg:min-h-[485px]">
+        <div class="location-stage-art absolute inset-0" aria-hidden="true"></div>
+        <span class="absolute left-6 top-6 z-20 inline-flex items-center gap-2 rounded-full border border-sky-900/10 bg-white/90 px-4 py-2 text-xs font-extrabold uppercase tracking-widest text-sky-950">
+          <i class="fa-solid fa-location-dot text-amber-600" aria-hidden="true"></i>
+          Springfield landmark
+        </span>
+
+        <ng-container *ngIf="place.image_path && !imageFailed; else imageUnavailable">
+          <img
+            class="location-cover relative z-10 mt-12 aspect-video w-full rounded-2xl bg-white/75 object-contain p-3 sm:mt-8 sm:p-4"
+            [src]="imageUrl(place.image_path)"
+            [alt]="'View of ' + place.name"
+            (error)="imageFailed = true"
+          />
+        </ng-container>
+        <ng-template #imageUnavailable>
+          <div class="relative z-10 mt-12 flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-2xl border border-white/70 bg-white/55 text-center text-sky-950 sm:mt-8">
+            <i class="fa-solid fa-house-chimney text-6xl" aria-hidden="true"></i>
+            <span class="text-sm font-semibold">Location image unavailable</span>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="flex flex-col justify-center gap-6 bg-white p-6 sm:p-9 lg:col-span-5 lg:p-11">
+        <div>
+          <p class="mb-3 text-xs font-extrabold uppercase tracking-[0.22em] text-amber-700">Location profile</p>
+          <h1 id="location-title" class="simpsons-title break-words text-3xl leading-tight text-slate-900 sm:text-4xl xl:text-5xl">{{ place.name }}</h1>
+          <p class="mt-4 flex items-start gap-2 text-base font-semibold text-slate-600">
+            <i class="fa-solid fa-map-pin mt-1 text-amber-600" aria-hidden="true"></i>
+            {{ place.town || 'Town not specified' }}
+          </p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div class="location-fact rounded-2xl p-4">
+            <p class="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <i class="fa-solid fa-store text-amber-600" aria-hidden="true"></i>
+              Type / use
+            </p>
+            <p class="font-extrabold text-slate-900">{{ place.use || 'Not specified' }}</p>
+          </div>
+          <div class="location-fact rounded-2xl p-4">
+            <p class="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <i class="fa-solid fa-city text-amber-600" aria-hidden="true"></i>
+              Town
+            </p>
+            <p class="font-extrabold text-slate-900">{{ place.town || 'Not specified' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-7 grid items-stretch gap-6 lg:grid-cols-5">
+    <section class="rounded-[1.75rem] border border-amber-100 bg-white p-6 shadow-sm sm:p-8 lg:col-span-3" aria-labelledby="about-location-title">
+      <div class="mb-5 flex items-center gap-3">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+          <i class="fa-solid fa-book-open text-lg" aria-hidden="true"></i>
+        </span>
+        <h2 id="about-location-title" class="location-section-title text-2xl font-extrabold text-slate-900">About this location</h2>
+      </div>
+      <p class="whitespace-pre-line text-base leading-8 text-slate-600">{{ place.description || 'There is no description available for this location yet.' }}</p>
+    </section>
+
+    <aside class="location-spotlight relative overflow-hidden rounded-[1.75rem] p-6 sm:p-8 lg:col-span-2" aria-labelledby="quick-facts-title">
+      <i class="fa-solid fa-location-dot absolute -right-2 -top-4 text-[120px] text-teal-950/10" aria-hidden="true"></i>
+      <p class="relative mb-3 text-xs font-extrabold uppercase tracking-[0.2em] text-teal-950/75">Around Springfield</p>
+      <h2 id="quick-facts-title" class="relative mb-5 text-2xl font-extrabold text-teal-950">Location at a glance</h2>
+      <dl class="relative space-y-4 text-teal-950">
+        <div class="border-t border-teal-950/20 pt-4">
+          <dt class="text-xs font-bold uppercase tracking-wider opacity-75">Place name</dt>
+          <dd class="mt-1 text-lg font-extrabold">{{ place.name }}</dd>
+        </div>
+        <div class="border-t border-teal-950/20 pt-4">
+          <dt class="text-xs font-bold uppercase tracking-wider opacity-75">Known for / use</dt>
+          <dd class="mt-1 text-lg font-extrabold">{{ place.use || 'Not specified' }}</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+
+  <section class="mt-10" aria-labelledby="appearances-title">
+    <div class="mb-5">
+      <p class="mb-1 text-xs font-extrabold uppercase tracking-[0.22em] text-amber-700">On screen</p>
+      <h2 id="appearances-title" class="location-section-title text-2xl font-extrabold text-slate-900 sm:text-3xl">First appearances</h2>
+      <p class="mt-2 text-slate-600">Discover when this place first appeared in The Simpsons.</p>
+    </div>
+
+    <div *ngIf="place.first_appearance_ep || place.first_appearance_sh; else noAppearances" class="grid gap-5 md:grid-cols-2">
+      <article *ngIf="place.first_appearance_ep as episode" class="location-appearance overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white">
+        <div class="relative aspect-video overflow-hidden bg-amber-100">
+          <ng-container *ngIf="episode.image_path && !episodeImageFailed; else episodeImageUnavailable">
+            <img class="h-full w-full object-cover" [src]="imageUrl(episode.image_path)" [alt]="'Scene from ' + episode.name" loading="lazy" (error)="episodeImageFailed = true" />
+          </ng-container>
+          <ng-template #episodeImageUnavailable>
+            <div class="flex h-full items-center justify-center text-5xl text-amber-700"><i class="fa-solid fa-tv" aria-hidden="true"></i></div>
+          </ng-template>
+          <span class="absolute left-4 top-4 rounded-full bg-slate-900/90 px-3 py-1.5 text-xs font-bold text-white">TV episode</span>
+        </div>
+        <div class="p-5 sm:p-6">
+          <h3 class="text-xl font-extrabold text-slate-900">{{ episode.name }}</h3>
+          <p class="mt-3 text-sm font-semibold text-slate-600">Season {{ episode.season }} · Episode #{{ episode.episode_number }}</p>
+          <a *ngIf="episode.id" [routerLink]="['/episodes', episode.id]" class="mt-5 inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-900 transition hover:bg-amber-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+            View episode <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+      <article *ngIf="place.first_appearance_sh as short" class="location-appearance overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white">
+        <div class="relative aspect-video overflow-hidden bg-amber-100">
+          <ng-container *ngIf="short.image_path && !shortImageFailed; else shortImageUnavailable">
+            <img class="h-full w-full object-cover" [src]="imageUrl(short.image_path)" [alt]="'Scene from ' + short.name" loading="lazy" (error)="shortImageFailed = true" />
+          </ng-container>
+          <ng-template #shortImageUnavailable>
+            <div class="flex h-full items-center justify-center text-5xl text-amber-700"><i class="fa-solid fa-film" aria-hidden="true"></i></div>
+          </ng-template>
+          <span class="absolute left-4 top-4 rounded-full bg-slate-900/90 px-3 py-1.5 text-xs font-bold text-white">Animated short</span>
+        </div>
+        <div class="p-5 sm:p-6">
+          <h3 class="text-xl font-extrabold text-slate-900">{{ short.name }}</h3>
+          <p class="mt-3 text-sm font-semibold text-slate-600">Season {{ short.season }} · Episode #{{ short.episode_number }}</p>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #noAppearances>
+      <p class="rounded-2xl border border-dashed border-amber-300 bg-amber-50 p-6 text-slate-600">
+        First appearance information is not available for this location yet.
+      </p>
+    </ng-template>
+  </section>
+
+  <div class="mt-9 flex flex-col items-start justify-between gap-4 rounded-[1.5rem] border border-sky-200 bg-sky-50 p-6 sm:flex-row sm:items-center">
+    <div>
+      <p class="text-lg font-extrabold text-slate-900">Keep exploring Springfield</p>
+      <p class="mt-1 text-sm text-slate-600">Discover more memorable places from the show.</p>
+    </div>
+    <a routerLink="/locations" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-amber-400 px-5 py-3 font-extrabold text-slate-900 transition hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      Browse locations
+    </a>
+  </div>
+</main>
