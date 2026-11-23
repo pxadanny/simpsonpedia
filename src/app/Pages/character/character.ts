@@ -1,51 +1,65 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { Simpsons } from '../../services/simpsons';
 import { Characterid } from '../../models/characterid';
 import { Spinner } from '../../Components/spinner/spinner';
+
 @Component({
   selector: 'app-character',
-  imports: [ CommonModule, Spinner],
+  imports: [CommonModule, RouterLink, Spinner],
   templateUrl: './character.html',
   styleUrl: './character.css',
 })
 export class Character implements OnInit {
-
-  character!: Characterid;
+  character: Characterid | null = null;
   loading = true;
+  errorMessage: string | null = null;
+  portraitFailed = false;
+
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
-    private route: ActivatedRoute,
-    private simpsonsService: Simpsons,
-    private cdr: ChangeDetectorRef
+    private readonly route: ActivatedRoute,
+    private readonly simpsonsService: Simpsons,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-  this.route.paramMap.subscribe(params => {
-    const id = Number(params.get('id'));
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      map((params) => Number(params.get('id'))),
+      distinctUntilChanged(),
+      tap(() => {
+        this.character = null;
+        this.loading = true;
+        this.errorMessage = null;
+        this.portraitFailed = false;
+        this.cdr.markForCheck();
+      }),
+      switchMap((id) => {
+        if (!Number.isInteger(id) || id <= 0) {
+          this.errorMessage = 'We could not find that character.';
+          return of(null);
+        }
 
-    if (id) {
-      this.getCharacter(id);
-    }
-  });
-}
-
-  getCharacter(id: number) {
-    this.simpsonsService.getCharacterById(id).subscribe({
-      next: (data) => {
-        console.log("API RESPONSE:", data);
-
-        this.character = data;
-        this.loading = false;
-
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error(err);
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
+        return this.simpsonsService.getCharacterById(id).pipe(
+          catchError(() => {
+            this.errorMessage = 'Something went wrong while loading this character. Please try again later.';
+            return of(null);
+          })
+        );
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((character) => {
+      this.character = character;
+      this.loading = false;
+      this.cdr.markForCheck();
     });
+  }
+
+  imageUrl(path?: string | null): string {
+    return path ? 'https://cdn.thesimpsonsapi.com/500' + path : '';
   }
 }
