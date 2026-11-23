@@ -1,16 +1,15 @@
+import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-
 import { Simpsons } from './simpsons';
 
 describe('Simpsons', () => {
-  let service: Simpsons;
-
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Simpsons);
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient()],
+    });
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('can be injected with HttpClient configured', () => {
+    expect(TestBed.inject(Simpsons)).toBeTruthy();
   });
 });
