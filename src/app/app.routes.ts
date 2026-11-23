@@ -5,14 +5,15 @@ import { Episodes } from './Pages/episodes/episodes';
 import { Episode } from './Pages/episode/episode';
 import { Locations } from './Pages/locations/locations';
 import { Location } from './Pages/location/location';
+import { Search } from './Pages/search/search';
 
 export const routes: Routes = [
-    {path: 'characters' , component: Characters},
-    {path: 'characters/:id', component: Character},
-    {path: 'episodes', component: Episodes},
-    {path: 'episodes/:id', component: Episode},
-    {path: 'locations', component: Locations},
-    {path: 'locations/:id', component: Location},
-    { path: '**', redirectTo: 'characters', pathMatch: 'full' }
-
+  { path: 'characters', component: Characters },
+  { path: 'characters/:id', component: Character },
+  { path: 'episodes', component: Episodes },
+  { path: 'episodes/:id', component: Episode },
+  { path: 'locations', component: Locations },
+  { path: 'locations/:id', component: Location },
+  { path: 'search', component: Search },
+  { path: '**', redirectTo: 'characters', pathMatch: 'full' },
 ];
