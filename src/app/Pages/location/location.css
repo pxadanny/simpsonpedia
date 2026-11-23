@@ -1,0 +1,53 @@
+:host {
+  display: block;
+}
+
+.location-hero {
+  isolation: isolate;
+}
+
+.location-stage {
+  isolation: isolate;
+  background: linear-gradient(155deg, #e2f7fb 0%, #a8e8f4 62%, #86d2e4 100%);
+}
+
+.location-stage-art {
+  z-index: -1;
+  opacity: 0.7;
+  background:
+    radial-gradient(circle at 86% 20%, #ffdd66 0 8%, transparent 8.4%),
+    radial-gradient(ellipse at 15% 92%, #8acba7 0 17%, transparent 17.5%),
+    radial-gradient(ellipse at 88% 110%, #58b893 0 29%, transparent 29.5%),
+    repeating-radial-gradient(circle at 0 0, transparent 0 27px, rgb(255 255 255 / 25%) 28px 30px, transparent 31px 56px);
+}
+
+.location-cover {
+  border: 3px solid rgb(255 255 255 / 80%);
+  filter: drop-shadow(0 15px 18px rgb(26 73 95 / 20%));
+}
+
+.location-fact {
+  border: 1px solid #eee6cf;
+  background: #fbf8ef;
+}
+
+.location-section-title {
+  letter-spacing: -0.035em;
+}
+
+.location-spotlight {
+  background: linear-gradient(145deg, #d2f5e7, #a3e3ce);
+  box-shadow: 5px 5px 0 #81c9b2;
+}
+
+.location-appearance {
+  box-shadow: 0 10px 28px rgb(24 34 47 / 7%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .location-appearance:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 32px rgb(24 34 47 / 12%);
+  }
+}
