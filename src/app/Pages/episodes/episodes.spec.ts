@@ -32,7 +32,7 @@ describe('Episodes catalog', () => {
     const page: HTMLElement = fixture.nativeElement;
     const link = page.querySelector('a[aria-label="View episode: Lisa the Vegetarian"]');
     expect(link?.getAttribute('href')).toBe('/episodes/7');
-    expect(page.textContent).toContain('October');
+    expect(page.textContent).toContain('Oct 15, 1995');
     expect(page.textContent).toContain('Lisa changes her diet.');
   });
 
