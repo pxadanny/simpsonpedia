@@ -1,0 +1,74 @@
+<main class="favorites-page mx-auto max-w-7xl px-4 pb-28 pt-7 sm:px-6 lg:pt-10">
+  <header class="favorites-banner relative mb-7 overflow-hidden rounded-[2rem] border border-amber-200 p-6 shadow-sm sm:p-10">
+    <i class="fa-solid fa-heart absolute -right-6 -top-9 text-[180px] text-rose-900/10" aria-hidden="true"></i>
+    <p class="relative mb-2 text-xs font-extrabold uppercase tracking-[0.2em] text-rose-800">My Springfield collection</p>
+    <h1 class="simpsons-title relative text-3xl text-slate-900 sm:text-5xl">My Favorites</h1>
+    <p class="relative mt-3 max-w-2xl text-slate-700">
+      Your saved characters, episodes and locations, all in one place.
+    </p>
+    <p class="relative mt-2 text-xs text-slate-600">Saved in this browser only. No account required.</p>
+  </header>
+
+  <div *ngIf="errorMessage" role="alert" class="mb-5 rounded-xl border border-orange-300 bg-orange-50 p-4 text-orange-900">
+    {{ errorMessage }}
+  </div>
+
+  <nav aria-label="Favorite categories" class="mb-6 flex flex-wrap gap-2">
+    <button *ngFor="let filter of ['all', 'characters', 'episodes', 'locations']"
+      type="button" (click)="setFilter($any(filter))"
+      class="favorite-filter" [class.favorite-filter-active]="activeFilter === filter"
+      [attr.aria-pressed]="activeFilter === filter">
+      {{ filter === 'all' ? 'All' : (filter | titlecase) }}
+      <span class="favorite-count">{{ count($any(filter)) }}</span>
+    </button>
+  </nav>
+
+  <div *ngIf="visible.length > 0; else emptyFavorites" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <article *ngFor="let entry of visible; trackBy: trackEntry"
+      class="favorite-card overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm">
+      <a [routerLink]="['/', entry.type, entry.id]"
+        class="group block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+        [attr.aria-label]="'View favorite ' + entry.name">
+        <div class="relative flex h-48 items-center justify-center overflow-hidden bg-amber-50">
+          <img *ngIf="entry.imagePath; else noImage"
+            class="h-full w-full object-contain p-3 transition duration-200 group-hover:scale-105"
+            [src]="imageUrl(entry.imagePath)" [alt]="entry.name" loading="lazy" />
+          <ng-template #noImage>
+            <i class="fa-solid fa-image text-5xl text-amber-300" aria-hidden="true"></i>
+          </ng-template>
+          <span class="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1.5 text-xs font-extrabold capitalize text-slate-800 shadow-sm">
+            {{ entry.type }}
+          </span>
+        </div>
+        <div class="p-4">
+          <h2 class="text-lg font-extrabold leading-snug text-slate-900">{{ entry.name }}</h2>
+          <p class="mt-2 text-sm text-slate-600">{{ entry.subtitle }}</p>
+        </div>
+      </a>
+      <div class="border-t border-amber-100 p-3">
+        <button type="button" (click)="remove(entry)"
+          [attr.aria-label]="'Remove ' + entry.name + ' from favorites'"
+          class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-bold text-rose-700 transition hover:bg-rose-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600">
+          <i class="fa-solid fa-heart-circle-minus" aria-hidden="true"></i>
+          Remove favorite
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <ng-template #emptyFavorites>
+    <section class="mx-auto max-w-xl rounded-[2rem] border border-dashed border-amber-300 bg-amber-50 p-9 text-center">
+      <i class="fa-regular fa-heart mb-4 text-5xl text-amber-500" aria-hidden="true"></i>
+      <h2 class="simpsons-title text-2xl text-slate-900">Nothing saved here yet!</h2>
+      <p class="mt-3 leading-7 text-slate-600">
+        {{ favorites.items().length === 0
+          ? 'Visit a character, episode or location and press Save to favorites.'
+          : 'There are no favorites in this category yet.' }}
+      </p>
+      <a routerLink="/characters"
+        class="mt-6 inline-flex items-center gap-2 rounded-full bg-amber-400 px-6 py-3 font-extrabold text-slate-900 transition hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700">
+        Browse characters <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </section>
+  </ng-template>
+</main>

@@ -1,44 +1,26 @@
-<nav class="fixed bottom-0 left-0 w-full h-[10vh] bg-white border-t border-amber-300 
-flex justify-evenly items-center py-2 sm:py-3 z-50">
-
-  <!-- Characters -->
-  <a routerLink="" 
-  routerLinkActive="text-amber-400 scale-110"
-  [routerLinkActiveOptions]="{ exact: true }"
-  class="flex flex-col items-center text-xs sm:text-sm text-gray-600 simpsons-title 
-  transition-all duration-200 hover:scale-110 hover:text-amber-300">
-
-    <img class="w-8 h-8 sm:w-10 sm:h-10"
-    src="https://img.icons8.com/doodle/48/maggie-simpson.png" 
-    alt="characters"/>
-
-    Characters
+<nav aria-label="Main navigation" class="fixed bottom-0 left-0 z-50 flex h-[10vh] min-h-[68px] w-full items-center justify-evenly border-t border-amber-300 bg-white px-1 py-2 shadow-[0_-4px_14px_rgba(0,0,0,0.04)] sm:px-4">
+  <a routerLink="/characters" routerLinkActive="text-amber-700 scale-105"
+    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
+    aria-label="Characters">
+    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="https://img.icons8.com/doodle/48/maggie-simpson.png" alt="" />
+    <span>Characters</span>
   </a>
-
-  <!-- Episodes -->
-  <a routerLink="/episodes" 
-  routerLinkActive="text-amber-400 scale-110"
-  class="flex flex-col items-center text-xs sm:text-sm text-gray-600 simpsons-title 
-  transition-all duration-200 hover:scale-110 hover:text-amber-300">
-
-    <img class="w-8 h-8 sm:w-10 sm:h-10"
-    src="tv.png" 
-    alt="episodes"/>
-
-    Episodes
+  <a routerLink="/episodes" routerLinkActive="text-amber-700 scale-105"
+    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
+    aria-label="Episodes">
+    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="tv.png" alt="" />
+    <span>Episodes</span>
   </a>
-
-  <!-- Locations -->
-  <a routerLink="/locations" 
-  routerLinkActive="text-amber-400 scale-110"
-  class="flex flex-col items-center text-xs sm:text-sm text-gray-600 simpsons-title 
-  transition-all duration-200 hover:scale-110 hover:text-amber-300">
-
-    <img class="w-8 h-8 sm:w-10 sm:h-10"
-    src="house.png" 
-    alt="locations"/>
-
-    Locations
+  <a routerLink="/locations" routerLinkActive="text-amber-700 scale-105"
+    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
+    aria-label="Locations">
+    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="house.png" alt="" />
+    <span>Locations</span>
   </a>
-
+  <a routerLink="/favorites" routerLinkActive="text-rose-600 scale-105"
+    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-rose-600 sm:text-sm"
+    aria-label="My Favorites">
+    <i class="fa-solid fa-heart text-xl text-rose-500 sm:text-2xl" aria-hidden="true"></i>
+    <span>Favorites</span>
+  </a>
 </nav>
