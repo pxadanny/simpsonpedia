@@ -35,7 +35,7 @@ describe('Global search results', () => {
     await fixture.whenStable();
 
     const component = fixture.componentInstance;
-    expect(component.matches.map((item) => item.name)).toEqual(['Homer Simpson', 'Homer at the Bat']);
+    expect(component.matches.map((item) => item.name)).toEqual(['Homer at the Bat', 'Homer Simpson']);
     expect(component.matches).toBe(component.matches);
     expect(component.count('characters')).toBe(1);
     expect(component.count('episodes')).toBe(1);
