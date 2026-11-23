@@ -1,26 +1,26 @@
-<nav aria-label="Main navigation" class="fixed bottom-0 left-0 z-50 flex h-[10vh] min-h-[68px] w-full items-center justify-evenly border-t border-amber-300 bg-white px-1 py-2 shadow-[0_-4px_14px_rgba(0,0,0,0.04)] sm:px-4">
-  <a routerLink="/characters" routerLinkActive="text-amber-700 scale-105"
-    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
-    aria-label="Characters">
-    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="https://img.icons8.com/doodle/48/maggie-simpson.png" alt="" />
+<nav aria-label="Main navigation" class="fixed inset-x-0 bottom-0 z-50 flex h-[80px] w-full items-stretch justify-evenly border-t border-amber-200 bg-white px-1 shadow-[0_-5px_16px_rgba(0,0,0,0.05)] sm:px-4">
+  <a routerLink="/characters" routerLinkActive="!text-amber-800" #charactersLink="routerLinkActive"
+    [attr.aria-current]="charactersLink.isActive ? 'page' : null"
+    class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[11px] font-extrabold text-slate-600 transition hover:bg-amber-50 hover:text-amber-800 sm:text-sm">
+    <i class="fa-solid fa-user-group text-xl sm:text-2xl" aria-hidden="true"></i>
     <span>Characters</span>
   </a>
-  <a routerLink="/episodes" routerLinkActive="text-amber-700 scale-105"
-    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
-    aria-label="Episodes">
-    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="tv.png" alt="" />
+  <a routerLink="/episodes" routerLinkActive="!text-violet-800" #episodesLink="routerLinkActive"
+    [attr.aria-current]="episodesLink.isActive ? 'page' : null"
+    class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[11px] font-extrabold text-slate-600 transition hover:bg-violet-50 hover:text-violet-800 sm:text-sm">
+    <i class="fa-solid fa-tv text-xl sm:text-2xl" aria-hidden="true"></i>
     <span>Episodes</span>
   </a>
-  <a routerLink="/locations" routerLinkActive="text-amber-700 scale-105"
-    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-amber-700 sm:text-sm"
-    aria-label="Locations">
-    <img class="h-7 w-7 object-contain sm:h-9 sm:w-9" src="house.png" alt="" />
+  <a routerLink="/locations" routerLinkActive="!text-rose-800" #locationsLink="routerLinkActive"
+    [attr.aria-current]="locationsLink.isActive ? 'page' : null"
+    class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[11px] font-extrabold text-slate-600 transition hover:bg-rose-50 hover:text-rose-800 sm:text-sm">
+    <i class="fa-solid fa-location-dot text-xl sm:text-2xl" aria-hidden="true"></i>
     <span>Locations</span>
   </a>
-  <a routerLink="/favorites" routerLinkActive="text-rose-600 scale-105"
-    class="simpsons-title flex min-w-0 flex-1 flex-col items-center gap-1 text-[11px] text-slate-600 transition hover:text-rose-600 sm:text-sm"
-    aria-label="My Favorites">
-    <i class="fa-solid fa-heart text-xl text-rose-500 sm:text-2xl" aria-hidden="true"></i>
+  <a routerLink="/favorites" routerLinkActive="!text-pink-800" #favoritesLink="routerLinkActive"
+    [attr.aria-current]="favoritesLink.isActive ? 'page' : null"
+    class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 text-[11px] font-extrabold text-slate-600 transition hover:bg-pink-50 hover:text-pink-800 sm:text-sm">
+    <i class="fa-solid fa-heart text-xl sm:text-2xl" aria-hidden="true"></i>
     <span>Favorites</span>
   </a>
 </nav>

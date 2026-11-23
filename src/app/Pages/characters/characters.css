@@ -1,0 +1,14 @@
+:host { display: block; }
+.catalog-banner {
+  background: linear-gradient(125deg, #e4f3ff 0%, #b6def9 65%, #9eccec 100%);
+}
+.catalog-image {
+  background: linear-gradient(165deg, #dbefff, #a9d6f2);
+}
+.catalog-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .catalog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgb(30 61 89 / 14%);
+  }
+}

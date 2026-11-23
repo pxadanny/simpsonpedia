@@ -1,17 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
-@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 @font-face {
   font-family: 'Simpsonfont';
-  src: url('/Fonts/Simpsonfont.otf') format('truetype');
+  src: url('/Fonts/Simpsonfont.otf') format('opentype');
+  font-display: swap;
 }
 
-.simpsons-title{
+.simpsons-title {
   font-family: 'Simpsonfont', cursive;
 }
-body{
-    background-color: #FFFFF0;
-    font-family: 'Nunito', sans-serif;
+
+html {
+  scroll-behavior: smooth;
 }
 
+body {
+  margin: 0;
+  background-color: #fffff0;
+  font-family: 'Nunito', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
