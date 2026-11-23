@@ -27,6 +27,7 @@ export class Search implements OnInit {
   };
 
   private readonly destroyRef = inject(DestroyRef);
+  private matchCache: { query: string; items: SearchItem[]; result: SearchItem[] } | null = null;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -60,10 +61,15 @@ export class Search implements OnInit {
 
   get matches(): SearchItem[] {
     const needle = this.normalize(this.query);
-
     if (needle.length < 2) return [];
 
-    return this.snapshot.items.filter((item) => {
+    // Angular can evaluate template getters repeatedly during change detection.
+    // Re-filter and re-sort only when the term or indexed items change.
+    if (this.matchCache?.query === needle && this.matchCache.items === this.snapshot.items) {
+      return this.matchCache.result;
+    }
+
+    const results = this.snapshot.items.filter((item) => {
       const name = this.normalize(item.name);
       const subtitle = this.normalize(item.subtitle);
       return name.includes(needle) || subtitle.includes(needle);
@@ -74,6 +80,9 @@ export class Search implements OnInit {
       const bRank = bName === needle ? 0 : bName.startsWith(needle) ? 1 : bName.includes(needle) ? 2 : 3;
       return aRank - bRank || aName.localeCompare(bName);
     });
+
+    this.matchCache = { query: needle, items: this.snapshot.items, result: results };
+    return results;
   }
 
   get filteredMatches(): SearchItem[] {
